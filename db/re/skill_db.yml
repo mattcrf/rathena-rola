@@ -18770,7 +18770,7 @@ Body:
       - Level: 10
         Size: 11
     Hit: Single
-    HitCount: 3
+    HitCount: -3
     Element: Weapon
     CopyFlags:
       Skill:
