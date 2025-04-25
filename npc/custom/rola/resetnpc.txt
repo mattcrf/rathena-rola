@@ -1,0 +1,21 @@
+sec_in02,144,168,4	script	Resetadora	893,{
+	
+	.npcname$ = "^0000FF[Resetadora]^000000";
+	
+	mes .npcname$;
+	mes "Selecione o que deseja resetar.";
+	next; 
+	switch(select("Resetar Habilidades","Resetar Atributos","Resetar Ambos","^FF0000Cancelar^000000")) {
+		case 1:
+			resetskill; 
+			set SkillPoint,118+(JobLevel-1);
+			break;
+		case 2: resetstatus; break;
+		case 3: resetstatus; resetskill; break;
+		case 4:
+			close;
+	}
+	mes .npcname$;
+	mes "Pronto!";	
+	close;		
+}

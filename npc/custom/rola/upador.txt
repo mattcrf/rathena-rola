@@ -1,0 +1,16 @@
+sec_in02,136,168,4	script	Upador	1_M_SIGNMONK2,{
+	.npcname$ = "^0000FF[Upador]^000000";
+	
+	mes .npcname$;
+	mes "Escolha seu nível de base.";
+	next;
+	input .@blvl;
+	if (.@blvl && .@blvl != BaseLevel) { atcommand "@blvl " + (.@blvl - BaseLevel); }
+	next;
+	mes .npcname$;
+	mes "Escolha seu nível de classe.";
+	next;
+	input .@jlvl;
+	if (.@jlvl && .@jlvl != JobLevel) { atcommand "@jlvl " + (.@jlvl - JobLevel);	}
+	end;
+}

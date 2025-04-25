@@ -1,0 +1,5 @@
+-	script	disable_npcs_rts	-1,{
+OnInit:
+	hideonnpc "Kachua's Secret Box#bm";
+	end;
+}
