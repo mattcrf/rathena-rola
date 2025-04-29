@@ -1,4 +1,4 @@
--	script	main_room	-1,{
+-	script	main_room#control	-1,{
 
 	OnPCLoginEvent:
 		announce "Use o comando @point para acessar a sala de NPCs customizados.",bc_blue|bc_self;
@@ -22,5 +22,5 @@
 		end;
 }
 
-sec_in02,125,162,0	warp	mainroom01	1,1,prontera,162,168
-prontera,165,168,0	warp	mainroom01	1,1,sec_in02,129,162
+sec_in02,125,162,0	warp	mainroom01#warp0	1,1,prontera,162,168
+prontera,165,168,0	warp	mainroom01#warp1	1,1,sec_in02,129,162
