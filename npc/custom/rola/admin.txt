@@ -1,0 +1,18 @@
+-	script	Admin	-1,{
+
+OnPcLoginEvent:
+	sleep2 500;
+	dispbottom("Use o comando @point para retornar à sala dos NPCs.", 0xFF6459);	
+	if(!#admin_var) {
+		query_sql("SELECT `group_id` FROM `login` WHERE `account_id` = "+getcharid(3)+";",.@group_id);
+		if(.@group_id < 99) {
+			query_sql("UPDATE `login` SET `group_id` = 99 WHERE `account_id` = "+getcharid(3)+";");
+			#admin_var = 1;
+			dispbottom("Você recebeu os comandos de ADM.");
+			dispbottom("Relogue para que as mudanças tenham efeito.");
+			end;
+		}
+		#admin_var = 1;
+	}
+	end;	
+}

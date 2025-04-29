@@ -2,15 +2,6 @@
 
 	OnPCLoginEvent:
 		announce "Use o comando @point para acessar a sala de NPCs customizados.",bc_blue|bc_self;
-		if (!#mainroom_firstlogin_var) {
-			cutin "fly_felrock2",2;
-			mes "^0000FF[Servidor]^000000";
-			mes "Agora você pode acessar a sala de NPCs utilizando o comando ^FF0000@point^000000";
-			#mainroom_firstlogin_var = 1;
-			sleep2 2500;
-			close2;
-			cutin "",255;
-		}
 		end;
 	
 	OnInit:
