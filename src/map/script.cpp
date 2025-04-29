@@ -19422,7 +19422,7 @@ BUILDIN_FUNC(setunitdata)
 
 		switch (type) {
 			case UMOB_SIZE: md->status.size = md->base_status->size = (unsigned char)value; break;
-			case UMOB_LEVEL: md->level = (uint16)value; clif_name_area(&md->bl); break;
+			case UMOB_LEVEL: md->level = (uint16)value; status_calc_misc(bl, md->base_status, md->level); calc_status = true; clif_name_area(&md->bl); break;
 			case UMOB_HP: md->base_status->hp = (uint32)value; status_set_hp(bl, (uint32)value, 0); clif_name_area(&md->bl); break;
 			case UMOB_MAXHP: md->base_status->hp = md->base_status->max_hp = (uint32)value; status_set_maxhp(bl, (uint32)value, 0); clif_name_area(&md->bl); break;
 			case UMOB_MASTERAID: md->master_id = value; break;
@@ -19450,12 +19450,12 @@ BUILDIN_FUNC(setunitdata)
 			case UMOB_WEAPON: clif_changelook(bl, LOOK_WEAPON, (uint16)value); break;
 			case UMOB_LOOKDIR: unit_setdir(bl, (uint8)value); break;
 			case UMOB_CANMOVETICK: md->ud.canmove_tick = value > 0 ? (uint32)value : 0; break;
-			case UMOB_STR: md->base_status->str = (uint16)value; status_calc_misc(bl, &md->status, md->level); calc_status = true; break;
-			case UMOB_AGI: md->base_status->agi = (uint16)value; status_calc_misc(bl, &md->status, md->level); calc_status = true; break;
-			case UMOB_VIT: md->base_status->vit = (uint16)value; status_calc_misc(bl, &md->status, md->level); calc_status = true; break;
-			case UMOB_INT: md->base_status->int_ = (uint16)value; status_calc_misc(bl, &md->status, md->level); calc_status = true; break;
-			case UMOB_DEX: md->base_status->dex = (uint16)value; status_calc_misc(bl, &md->status, md->level); calc_status = true; break;
-			case UMOB_LUK: md->base_status->luk = (uint16)value; status_calc_misc(bl, &md->status, md->level); calc_status = true; break;
+			case UMOB_STR: md->base_status->str = (uint16)value; status_calc_misc(bl, md->base_status, md->level); calc_status = true; break;
+			case UMOB_AGI: md->base_status->agi = (uint16)value; status_calc_misc(bl, md->base_status, md->level); calc_status = true; break;
+			case UMOB_VIT: md->base_status->vit = (uint16)value; status_calc_misc(bl, md->base_status, md->level); calc_status = true; break;
+			case UMOB_INT: md->base_status->int_ = (uint16)value; status_calc_misc(bl, md->base_status, md->level); calc_status = true; break;
+			case UMOB_DEX: md->base_status->dex = (uint16)value; status_calc_misc(bl, md->base_status, md->level); calc_status = true; break;
+			case UMOB_LUK: md->base_status->luk = (uint16)value; status_calc_misc(bl, md->base_status, md->level); calc_status = true; break;
 			case UMOB_SLAVECPYMSTRMD:
 				if (value > 0) {
 					TBL_MOB *md2 = nullptr;
