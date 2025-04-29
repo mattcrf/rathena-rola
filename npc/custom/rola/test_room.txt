@@ -1,0 +1,297 @@
+//===== rAthena Script =====
+ba_go,47,50,6	script	Configurar#ins_testroom_settings	858,{
+	.@npcname$ = "^0000FF[Configurar Dummy]^000000";
+
+Main_Menu:
+	mes .@npcname$;	
+	if ('DS_LEVEL < 0) { mes "Level: 100"; } else { mes "Level: " + 'DS_LEVEL; }
+	if ('DS_SIZE < 0) { mes "Tamanho: Médio"; } else { mes "Tamanho: " + 'N_SIZE$['DS_SIZE]; }
+	if ('DS_RACE < 0) { mes "Raça: Amorfo"; } else { mes "Raça: " + 'N_RACE$['DS_RACE]; }
+	if ('DS_CLASS < 0) { mes "Tipo: Chefe"; } else { mes "Tipo: Normal";}
+	if ('DS_ELE < 0) { mes "Elemento: Neutro [1]"; } else { mes "Elemento: " + 'N_ELE$['DS_ELE] + " [" + 'DS_ELE_LV + "]"; }
+	if ('DS_DEF < 0) { mes "Defesa: 0"; } else { mes "Defesa: " + 'DS_DEF; }
+	if ('DS_MDEF < 0) { mes "Defesa Mágica: 0"; } else { mes "Defesa Mágica: " + 'DS_MDEF; }
+	if ('DS_FLEE < 0) { mes "Esquiva: 200"; } else { mes "Esquiva: " + 'DS_FLEE; }
+	if ('DS_STR < 0) { mes "FOR: 0"; } else { mes "FOR: " + 'DS_STR; }
+	if ('DS_AGI < 0) { mes "AGI: 0"; } else { mes "AGI: " + 'DS_AGI; }
+	if ('DS_VIT < 0) { mes "VIT: 0"; } else { mes "VIT: " + 'DS_VIT; }
+	if ('DS_INT < 0) { mes "INT: 0"; } else { mes "INT: " + 'DS_INT; }
+	if ('DS_DEX < 0) { mes "DES: 0"; } else { mes "DES: " + 'DS_DEX; }
+	if ('DS_LUK < 0) { mes "SOR: 0"; } else { mes "SOR: " + 'DS_LUK; }	
+	next;
+	switch(select("Configurar.:Cancelar.")) {
+		case 1:
+			next;
+			switch(select("Level:Tamanho:Raça:Tipo:Elemento:Defesa:Defesa Mágica:Esquiva:Atributos")) {
+				case 1:
+					next;
+					mes .@npcname$;
+					mes "Escolha um valor entre 1 e 255";
+					input .@val,1,255;
+					'DS_LEVEL = .@val;
+					setunitdata 'GID,UMOB_LEVEL,'DS_LEVEL;
+					next;
+					goto Main_Menu;
+					break;					
+				case 2:
+					next;
+					.@val = select("Pequeno:Médio:Grande")-1;
+					'DS_SIZE = .@val;
+					setunitdata 'GID,UMOB_SIZE,'DS_SIZE;
+					goto Main_Menu;
+					break;
+				case 3:
+					next;
+					.@val = select("Amorfo:Morto-Vivo:Bruto:Planta:Inseto:Peixe:Demônio:Humanóide:Anjo:Dragão")-1;
+					'DS_RACE = .@val;
+					setunitdata 'GID,UMOB_RACE,'DS_RACE;
+					goto Main_Menu;
+					break;
+				case 4:
+					next;
+					getunitdata 'GID,.@data;
+					.@mob_mode = .@data[9];
+					.@is_boss = ((.@mob_mode&0x4000000) > 0);
+					.@opt = select("Normal:Chefe");
+					dispbottom("" + .@data[UMOB_AGI]);
+					if (.@opt == 1 && .@is_boss == 1) {
+						setunitdata 'GID,UMOB_MODE,.@mob_mode&(~0x4000000);
+						'DS_CLASS = 1;
+					}
+					if (.@opt == 2 && .@is_boss == 0) {
+						setunitdata 'GID,UMOB_MODE,.@mob_mode|0x4000000;
+						'DS_CLASS = -1;
+					}
+					goto Main_Menu;
+					break;
+				case 5:
+					next;
+					.@ele_type = select("Neutro:Água:Terra:Fogo:Vento:Veneno:Sagrado:Sombrio:Fantasma:Morto-Vivo")-1;
+					.@ele_name$ = 'N_ELE$[.@ele_type];
+					.@ele_lv = select(.@ele_name$ + " 1:" + .@ele_name$ + " 2:" + .@ele_name$ + " 3:" + .@ele_name$ + " 4");
+					'DS_ELE = .@ele_type;
+					'DS_ELE_LV = .@ele_lv;
+					setunitdata 'GID,UMOB_ELETYPE,'DS_ELE;
+					setunitdata 'GID,UMOB_ELELEVEL,'DS_ELE_LV;
+					goto Main_Menu;
+					break;
+				case 6:
+					next;
+					mes .@npcname$;
+					mes "Escolha um valor entre 0 e 999";
+					input .@val,0,999;
+					'DS_DEF = .@val;
+					setunitdata 'GID,UMOB_DEF,'DS_DEF;
+					next;
+					goto Main_Menu;
+					break;
+				case 7:
+					next;
+					mes .@npcname$;
+					mes "Escolha um valor entre 0 e 999";
+					input .@val,0,999;
+					'DS_MDEF = .@val;
+					setunitdata 'GID,UMOB_MDEF,'DS_MDEF;
+					next;
+					goto Main_Menu;
+					break;
+				case 8:
+					next;
+					mes .@npcname$;
+					mes "Escolha um valor entre 0 e 9999";
+					input .@val,0,9999;
+					'DS_FLEE = .@val;
+					setunitdata 'GID,UMOB_FLEE,'DS_FLEE;
+					next;
+					goto Main_Menu;
+					break;
+				case 9:
+					next;
+					.@attr = select("FOR:AGI:VIT:INT:DES:SOR:Cancelar")-1;
+					if (.@attr == 6)
+						close;
+					next;
+					mes .@npcname$;
+					mes "Escolha um valor entre 1 e 999";
+					input .@val,0,999;
+					switch (.@attr) {
+						case 0: 'DS_STR = .@val; break;
+						case 1: 'DS_AGI = .@val; break;
+						case 2: 'DS_VIT = .@val; break;
+						case 3: 'DS_INT = .@val; break;
+						case 4: 'DS_DEX = .@val; break;
+						case 5: 'DS_LUK = .@val;
+					}
+					setunitdata 'GID,UMOB_STR+.@attr,.@val;
+					next;
+					goto Main_Menu;
+					break;						
+			}
+			break;
+		case 2:
+			close;
+	}
+
+OnInit:
+	disablenpc strnpcinfo(0);
+	end;
+
+OnInstanceInit:
+	enablenpc instance_npcname(strnpcinfo(0));
+	end;	
+}
+
+ba_go,63,40,4	script	Saída#ins_testroom_leave	899,{
+	mes "^0000FF[Saída]^000000";
+	mes "Deseja sair?";
+	if (select("Sim.:Não.") == 2)
+		close;
+	warp "SavePoint",0,0;
+	end;
+
+OnInit:
+	disablenpc strnpcinfo(0);
+	end;
+
+OnInstanceInit:
+	enablenpc instance_npcname(strnpcinfo(0));
+	end;	
+}
+
+ba_go,49,52,6	script	Curandeira#ins_testroom_healer	569,{
+	specialeffect2 EF_HEAL;
+	percentheal 100,100; 	
+
+OnInit:
+	disablenpc strnpcinfo(0);
+	end;
+
+OnInstanceInit:
+	enablenpc instance_npcname(strnpcinfo(0));
+	end;	
+}
+
+ba_go,0,0,0	script	#ins_testroom_init	-1,{
+OnInstanceInit:
+	setarray 'N_SIZE$[0],"Pequeno","Médio","Grande";
+	setarray 'N_RACE$[0],"Amorfo","Morto-Vivo","Bruto","Planta","Inseto","Peixe","Demônio","Humanóide","Anjo","Dragão";
+	setarray 'N_ELE$[0],"Neutro","Água","Terra","Fogo","Vento","Veneno","Sagrado","Sombrio","Fantasma","Morto-Vivo";
+
+	'DS_LEVEL = -1;
+	'DS_SIZE = -1;
+	'DS_RACE = -1;
+	'DS_CLASS = -1;
+	'DS_ELE = -1;
+	'DS_ELE_LV = -1;
+	'DS_DEF = -1;
+	'DS_MDEF = -1;
+	'DS_FLEE = -1;
+	'DS_STR = -1;
+	'DS_AGI = -1;
+	'DS_VIT = -1;
+	'DS_INT = -1;
+	'DS_DEX = -1;
+	'DS_LUK = -1;	
+	donpcevent instance_npcname("#ins_testroom_spawn")+"::OnEnable";
+	end;
+}
+
+ba_go,0,0,0	script	#ins_testroom_spawn	-1,{
+OnEnable:
+	monster instance_mapname("ba_go"),55,50,"Dummy Teste",21065,1,instance_npcname("#ins_testroom_spawn")+"::OnMyMobDead";
+	'GID = $@mobid[0];	
+	if ('DS_LEVEL >= 0) setunitdata 'GID,UMOB_LEVEL,'DS_LEVEL;
+	if ('DS_SIZE >= 0) setunitdata 'GID,UMOB_SIZE,'DS_SIZE;
+	if ('DS_RACE >= 0) setunitdata 'GID,UMOB_RACE,'DS_RACE;
+	if ('DS_CLASS >= 0) {
+		getunitdata 'GID,.@data;
+		setunitdata 'GID,UMOB_MODE,.@data[9]&(~0x4000000);
+	}
+	if ('DS_ELE >= 0) setunitdata 'GID,UMOB_ELETYPE,'DS_ELE;
+	if ('DS_ELE_LV >= 0) setunitdata 'GID,UMOB_ELELEVEL,'DS_ELE_LV;
+	if ('DS_DEF >= 0) setunitdata 'GID,UMOB_DEF,'DS_DEF;
+	if ('DS_MDEF >= 0) setunitdata 'GID,UMOB_MDEF,'DS_MDEF;
+	if ('DS_FLEE >= 0) setunitdata 'GID,UMOB_FLEE,'DS_FLEE;
+	if ('DS_STR >= 0) setunitdata 'GID,UMOB_STR,'DS_STR;
+	if ('DS_AGI >= 0) setunitdata 'GID,UMOB_AGI,'DS_AGI;
+	if ('DS_VIT >= 0) setunitdata 'GID,UMOB_VIT,'DS_VIT;
+	if ('DS_INT >= 0) setunitdata 'GID,UMOB_INT,'DS_INT;
+	if ('DS_DEX >= 0) setunitdata 'GID,UMOB_DEX,'DS_DEX;
+	if ('DS_LUK >= 0) setunitdata 'GID,UMOB_LUK,'DS_LUK;
+	end;
+
+OnMyMobDead:
+	sleep(2000);
+	donpcevent instance_npcname("#ins_testroom_spawn")+"::OnEnable";
+	end;
+}
+
+sec_in02,144,156,4	script	Sala de Testes	121,{
+	.@instance$ = "Sala de Testes";
+	.@npcname$ = "^0000FF[" + .@instance$ + "]^000000";
+	
+	.@ins_id = instance_id(IM_PARTY);
+	if (instance_live_info(ILI_NAME, .@ins_id) == .@instance$) {
+		mes .@npcname$;
+		mes "O que deseja fazer?";
+		next;
+		switch(select("Entrar na instância.:Nada.:Destruir instância.")) {
+		case 1:
+			break;
+		case 2:
+			close;
+		case 3:
+			instance_destroy(.@ins_id);
+			close;
+		}		
+	}
+	else if (.@ins_id) {
+		mes .@npcname$;
+		mes "Você já possui uma instância em andamento.";
+		close;
+	}
+	else {
+		mes .@npcname$;
+		mes "O que deseja fazer?";
+		next;
+		switch(select("Entrar na instância.:Nada.")) {
+		case 1:
+			.@create = instance_create(.@instance$);
+			if (.@create < 0) {
+				mes .@npcname$;
+				switch (.@create) {
+					case -1: mes "ERRO: Tipo inválido."; break;
+					case -2: mes "ERRO: Grupo não encontrado."; break;
+					case -3: mes "ERRO: Instância já existe."; break;
+					case -4: mes "ERRO: Não há slots de instância livres."; break;
+				}
+				mes " ";
+				mes "A criação de instância ^FF0000falhou^000000.";
+				emotion ET_HUK;
+				close;
+			}
+			break;
+		case 2:
+			close;
+		}		
+	}
+	.@enter = instance_enter(.@instance$);
+	if (.@enter != 0) {
+		mes .@npcname$;
+		switch (.@enter) {
+			case 1: mes "ERRO: Grupo não encontrado."; break;
+			case 2: mes "ERRO: Grupo não possui uma instância."; break;
+			case 3: mes "ERRO: Erro desconhecido."; break;
+		}
+		mes " ";
+		mes "A entrada na instância ^FF0000falhou^000000.";
+		emotion ET_HUK;
+		close;
+	}
+	close;
+}
+
+ba_go	mapflag	nosave	SavePoint
+ba_go	mapflag	noreturn
+ba_go	mapflag	noteleport
+ba_go	mapflag	nomemo
